@@ -1,5 +1,6 @@
 package finalProject.version1;
 
+import java.awt.Color;
 import java.util.EnumSet;
 
 import javax.swing.JFrame;
@@ -118,6 +119,7 @@ public class FaceTracking {
          //creating color stream window
          SimpleCameraStream c_raw = new SimpleCameraStream(); 
          DrawFrame c_df = new DrawFrame(colorWidth, colorHeight);
+         //DrawFrame c_df = new DrawFrame(colorWidth, colorHeight,0,0,0,0);
          JFrame cframe= new JFrame("Color Stream");	
          cframe.addWindowListener(listener);
          cframe.setSize(colorWidth, colorHeight); 
@@ -147,6 +149,40 @@ public class FaceTracking {
                   	//PXCMCapture.Sample sample = senseMgr.QuerySample();
                 	 PXCMCapture.Sample sample = senseMgr.QueryFaceSample();
                      
+                	 faceData.Update();
+  	               	for (int fidx=0; ; fidx++) {
+ 	 	                PXCMFaceData.Face face = faceData.QueryFaceByIndex(fidx);
+ 	 	                if (face==null){
+ 	 	                	//remove rect in case of no face found.
+ 	 	                	if(fidx == 0){
+ 	 	                		c_df.setPoints(0,0,0,0);
+ 	 	                        c_df.repaint();
+ 	 	                        d_df.setPoints(0,0,0,0);
+	 	                        d_df.repaint();
+ 	 	                	}
+ 	 	                	System.out.println("found " + fidx + " faces in range");
+ 	 	                	break;
+ 	 	                }
+ 	 	                //
+ 	 	                PXCMFaceData.DetectionData detectData = face.QueryDetection(); 
+ 	 	              
+ 	 	                if (detectData != null)
+ 	 	                {
+ 	 	                    PXCMRectI32 rect = new PXCMRectI32();
+ 	 	                    boolean ret = detectData.QueryBoundingRect(rect);
+ 	 	                    if (ret) { 
+ 	 	                        System.out.println ("Top Left corner: (" + rect.x + "," + rect.y + ")" ); 
+ 	 	                        System.out.println ("Height: " + rect.h + " Width: " + rect.w);
+ 	 	                        //technically only painting over one face at a time even though the program is finding as many as there are.
+ 	 	                        //considering the program it makes sense.
+ 	 	                        c_df.setPoints(rect.x,rect.y,rect.w,rect.h);
+ 	 	                        d_df.setPoints(rect.x,rect.y,rect.w,rect.h);
+ 	 	                    }
+ 	 	                } else {
+ 	 	                	System.out.println("Error in detect data.");
+ 	 	                	break;
+ 	 	                }
+  	               	}
                 	 
                 	 
                      if (sample.color != null)
@@ -195,33 +231,7 @@ public class FaceTracking {
  	                    }
  	                }
  	                
- 	                faceData.Update();
- 	               	for (int fidx=0; ; fidx++) {
-	 	                PXCMFaceData.Face face = faceData.QueryFaceByIndex(fidx);
-	 	                if (face==null){
-	 	                	System.out.println("found " + fidx + " faces in range");
-	 	                	break;
-	 	                }
-	 	                //
-	 	                PXCMFaceData.DetectionData detectData = face.QueryDetection(); 
-	 	              
-	 	                if (detectData != null)
-	 	                {
-	 	                    PXCMRectI32 rect = new PXCMRectI32();
-	 	                    boolean ret = detectData.QueryBoundingRect(rect);
-	 	                    if (ret) { 
-	 	                        System.out.println ("Top Left corner: (" + rect.x + "," + rect.y + ")" ); 
-	 	                        System.out.println ("Height: " + rect.h + " Width: " + rect.w);
-	 	                        DrawingComponent dc = new DrawingComponent(rect.x,rect.y,rect.h,rect.w);
-	 	                        cframe.add(dc);
-	 	                        dframe.add(dc);
-	 	                        //cframe.repaint();
-	 	                    }
-	 	                } else {
-	 	                	System.out.println("Error in detect data.");
-	 	                	break;
-	 	                }
- 	               	}
+ 	                
                  }
                  else
                  {
