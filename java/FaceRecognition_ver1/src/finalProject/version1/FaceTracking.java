@@ -9,6 +9,7 @@ import intel.rssdk.PXCMFaceConfiguration;
 import intel.rssdk.PXCMFaceData;
 import intel.rssdk.PXCMFaceModule;
 import intel.rssdk.PXCMImage;
+import intel.rssdk.PXCMRectI32;
 import intel.rssdk.PXCMSenseManager;
 import intel.rssdk.PXCMSession;
 import intel.rssdk.pxcmStatus;
@@ -134,14 +135,20 @@ public class FaceTracking {
          
          if (sts == pxcmStatus.PXCM_STATUS_NO_ERROR)
          {
+        	 int framesCounter = 0;
              while (listener.exit == false)
              {
                  sts = senseMgr.AcquireFrame(true);
+                 framesCounter++;
+                 System.out.println("\nframe #"+framesCounter);
                  
                  if (sts == pxcmStatus.PXCM_STATUS_NO_ERROR)
                  {
-                  	PXCMCapture.Sample sample = senseMgr.QuerySample();
+                  	//PXCMCapture.Sample sample = senseMgr.QuerySample();
+                	 PXCMCapture.Sample sample = senseMgr.QueryFaceSample();
                      
+                	 
+                	 
                      if (sample.color != null)
                      {
      	                PXCMImage.ImageData cData = new PXCMImage.ImageData();                
@@ -186,7 +193,35 @@ public class FaceTracking {
  	                        System.out.println ("Failed to ReleaseAccess of depth image data");
  	                        System.exit(3);
  	                    }
- 	                }  
+ 	                }
+ 	                
+ 	                faceData.Update();
+ 	               	for (int fidx=0; ; fidx++) {
+	 	                PXCMFaceData.Face face = faceData.QueryFaceByIndex(fidx);
+	 	                if (face==null){
+	 	                	System.out.println("found " + fidx + " faces in range");
+	 	                	break;
+	 	                }
+	 	                //
+	 	                PXCMFaceData.DetectionData detectData = face.QueryDetection(); 
+	 	              
+	 	                if (detectData != null)
+	 	                {
+	 	                    PXCMRectI32 rect = new PXCMRectI32();
+	 	                    boolean ret = detectData.QueryBoundingRect(rect);
+	 	                    if (ret) { 
+	 	                        System.out.println ("Top Left corner: (" + rect.x + "," + rect.y + ")" ); 
+	 	                        System.out.println ("Height: " + rect.h + " Width: " + rect.w);
+	 	                        DrawingComponent dc = new DrawingComponent(rect.x,rect.y,rect.h,rect.w);
+	 	                        cframe.add(dc);
+	 	                        dframe.add(dc);
+	 	                        //cframe.repaint();
+	 	                    }
+	 	                } else {
+	 	                	System.out.println("Error in detect data.");
+	 	                	break;
+	 	                }
+ 	               	}
                  }
                  else
                  {
@@ -196,6 +231,7 @@ public class FaceTracking {
                  senseMgr.ReleaseFrame();
              }
              
+             faceData.close();
              senseMgr.Close();
              System.out.println("Done streaming");
          }

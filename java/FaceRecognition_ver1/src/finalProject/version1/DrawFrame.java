@@ -1,6 +1,7 @@
 package finalProject.version1;
 
-
+import java.awt.*;
+import javax.swing.*;
 import intel.rssdk.*;
 import org.opencv.core.*;
 
@@ -29,3 +30,18 @@ class Listener extends WindowAdapter {
 		exit=true;
 	}
 }
+
+class DrawingComponent extends Component{
+	public Rectangle rect;
+	
+	public DrawingComponent( int x,int y, int w, int h) { 
+		rect = new Rectangle(x,y,w,h);
+	}
+	
+	public void paint(Graphics g) {
+		Graphics2D g2 =	((Graphics2D)g);
+		g2.draw(rect); 
+    }
+	
+}
+
