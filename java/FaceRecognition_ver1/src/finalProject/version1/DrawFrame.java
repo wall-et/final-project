@@ -14,34 +14,34 @@ import java.awt.image.BufferedImage;
 
 class DrawFrame extends Component { 
     public BufferedImage image;
-    int x = 0;
-    int y = 0;
-    int h = 0;
-    int w = 0;
+    int rectX = 0;
+    int rectY = 0;
+    int rectH = 0;
+    int rectW = 0;
 
     public DrawFrame(int width, int height) { 
        image=new BufferedImage(width,height,BufferedImage.TYPE_INT_RGB);
     }
     
     public DrawFrame(int width, int height, int x,int y, int w, int h) { 
-		this.w = w;
-        this.h = h;
-        this.x = x;
-        this.y = y;
+		this.rectW = w;
+        this.rectH = h;
+        this.rectX = x;
+        this.rectY = y;
         image=new BufferedImage(width,height,BufferedImage.TYPE_INT_RGB);
 	}
 
     public void paint(Graphics g) {
         ((Graphics2D)g).drawImage(image,0,0,null);
         g.setColor(Color.RED);
-        ((Graphics2D)g).drawRect(x, y, w, h);
+        ((Graphics2D)g).drawRect(rectX, rectY, rectW, rectH);
     }
     
     public void setPoints(int x,int y, int w, int h){
-		this.w = w;
-        this.h = h;
-        this.x = x;
-        this.y = y;
+    	this.rectW = w;
+        this.rectH = h;
+        this.rectX = x;
+        this.rectY = y;
 	}
 }
 

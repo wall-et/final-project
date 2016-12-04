@@ -90,7 +90,7 @@ public class SimpleCameraStream {
          depthHeight = profiles.depth.imageInfo.height;
     	
          Listener listener = new Listener();
-         
+         /*
          //creating color stream window
          SimpleCameraStream c_raw = new SimpleCameraStream(); 
          DrawFrame c_df = new DrawFrame(colorWidth, colorHeight);
@@ -99,7 +99,9 @@ public class SimpleCameraStream {
          cframe.setSize(colorWidth, colorHeight); 
          cframe.add(c_df);
          cframe.setVisible(true);
+         */
          
+         /*
          //creating depth stream window
          SimpleCameraStream d_raw = new SimpleCameraStream(); 
          DrawFrame d_df=new DrawFrame(depthWidth, depthHeight);      
@@ -108,6 +110,10 @@ public class SimpleCameraStream {
          dframe.setSize(depthWidth, depthHeight); 
          dframe.add(d_df);
          dframe.setVisible(true);
+         */
+         
+         CameraStream colorStream = new CameraStream(colorWidth, colorHeight, "Color Stream",listener);
+         CameraStream depthStream = new CameraStream(depthWidth, depthHeight, "Depth Stream",listener);
          
          if (sts == pxcmStatus.PXCM_STATUS_NO_ERROR)
          {
@@ -133,9 +139,11 @@ public class SimpleCameraStream {
  	                    int cBuff[] = new int[cData.pitches[0]/4 * colorHeight];
                          
  		                cData.ToIntArray(0, cBuff);
- 	    	            c_df.image.setRGB (0, 0, colorWidth, colorHeight, cBuff, 0, cData.pitches[0]/4);
- 	        	        c_df.repaint();  
+ 	    	            //c_df.image.setRGB (0, 0, colorWidth, colorHeight, cBuff, 0, cData.pitches[0]/4);
+ 	        	        //c_df.repaint();  
  	           	        sts = sample.color.ReleaseAccess(cData);
+ 	           	        colorStream.content.image.setRGB (0, 0, colorWidth, colorHeight, cBuff, 0, cData.pitches[0]/4);
+ 	           	        colorStream.content.repaint();
  						
  	              	    if (sts.compareTo(pxcmStatus.PXCM_STATUS_NO_ERROR)<0)
  						{
@@ -156,8 +164,10 @@ public class SimpleCameraStream {
 
  	                    int dBuff[] = new int[dData.pitches[0]/4 * depthHeight];
  	                    dData.ToIntArray(0, dBuff);
- 	                    d_df.image.setRGB (0, 0, depthWidth, depthHeight, dBuff, 0, dData.pitches[0]/4);
- 	                    d_df.repaint();
+ 	                    //d_df.image.setRGB (0, 0, depthWidth, depthHeight, dBuff, 0, dData.pitches[0]/4);
+ 	                    //d_df.repaint();
+ 	                    depthStream.content.image.setRGB (0, 0, depthWidth, depthHeight, dBuff, 0, dData.pitches[0]/4);
+	                    depthStream.content.repaint();
  	                    sts = sample.depth.ReleaseAccess(dData);
  	                    if (sts.compareTo(pxcmStatus.PXCM_STATUS_NO_ERROR)<0)
  	                    {
@@ -182,7 +192,9 @@ public class SimpleCameraStream {
              System.out.println("Failed to initialize");
          }
          
-         cframe.dispose();
-         dframe.dispose();
+         //cframe.dispose();
+         //dframe.dispose();
+         colorStream.window.dispose();
+         depthStream.window.disable();
     }
 }

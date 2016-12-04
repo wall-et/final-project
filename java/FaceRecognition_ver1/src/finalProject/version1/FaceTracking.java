@@ -116,24 +116,8 @@ public class FaceTracking {
     	
          Listener listener = new Listener();
          
-         //creating color stream window
-         SimpleCameraStream c_raw = new SimpleCameraStream(); 
-         DrawFrame c_df = new DrawFrame(colorWidth, colorHeight);
-         //DrawFrame c_df = new DrawFrame(colorWidth, colorHeight,0,0,0,0);
-         JFrame cframe= new JFrame("Color Stream");	
-         cframe.addWindowListener(listener);
-         cframe.setSize(colorWidth, colorHeight); 
-         cframe.add(c_df);
-         cframe.setVisible(true);
-         
-         //creating depth stream window
-         SimpleCameraStream d_raw = new SimpleCameraStream(); 
-         DrawFrame d_df=new DrawFrame(depthWidth, depthHeight);      
-         JFrame dframe= new JFrame("Depth Stream"); 
-         dframe.addWindowListener(listener);
-         dframe.setSize(depthWidth, depthHeight); 
-         dframe.add(d_df);
-         dframe.setVisible(true);
+         CameraStream colorStream = new CameraStream(colorWidth, colorHeight, "Color Stream",listener);
+         CameraStream depthStream = new CameraStream(depthWidth, depthHeight, "Depth Stream",listener);
          
          if (sts == pxcmStatus.PXCM_STATUS_NO_ERROR)
          {
@@ -146,43 +130,46 @@ public class FaceTracking {
                  
                  if (sts == pxcmStatus.PXCM_STATUS_NO_ERROR)
                  {
-                  	//PXCMCapture.Sample sample = senseMgr.QuerySample();
+                	 
+                	 //FACE DETECTION LOGIC
+                	 //PXCMCapture.Sample sample = senseMgr.QuerySample();
                 	 PXCMCapture.Sample sample = senseMgr.QueryFaceSample();
                      
                 	 faceData.Update();
-  	               	for (int fidx=0; ; fidx++) {
- 	 	                PXCMFaceData.Face face = faceData.QueryFaceByIndex(fidx);
- 	 	                if (face==null){
- 	 	                	//remove rect in case of no face found.
- 	 	                	if(fidx == 0){
- 	 	                		c_df.setPoints(0,0,0,0);
- 	 	                        c_df.repaint();
- 	 	                        d_df.setPoints(0,0,0,0);
-	 	                        d_df.repaint();
- 	 	                	}
- 	 	                	System.out.println("found " + fidx + " faces in range");
- 	 	                	break;
- 	 	                }
- 	 	                //
- 	 	                PXCMFaceData.DetectionData detectData = face.QueryDetection(); 
- 	 	              
- 	 	                if (detectData != null)
- 	 	                {
- 	 	                    PXCMRectI32 rect = new PXCMRectI32();
- 	 	                    boolean ret = detectData.QueryBoundingRect(rect);
- 	 	                    if (ret) { 
- 	 	                        System.out.println ("Top Left corner: (" + rect.x + "," + rect.y + ")" ); 
- 	 	                        System.out.println ("Height: " + rect.h + " Width: " + rect.w);
- 	 	                        //technically only painting over one face at a time even though the program is finding as many as there are.
- 	 	                        //considering the program it makes sense.
- 	 	                        c_df.setPoints(rect.x,rect.y,rect.w,rect.h);
- 	 	                        d_df.setPoints(rect.x,rect.y,rect.w,rect.h);
- 	 	                    }
- 	 	                } else {
- 	 	                	System.out.println("Error in detect data.");
- 	 	                	break;
- 	 	                }
-  	               	}
+                	 for (int fidx=0; ; fidx++) {
+                		 PXCMFaceData.Face face = faceData.QueryFaceByIndex(fidx);
+                		 if (face==null){
+                			 //remove rect in case of no face found.
+                			 if(fidx == 0){
+                				 colorStream.content.setPoints(0,0,0,0);
+                				 colorStream.content.repaint();
+                				 depthStream.content.setPoints(0,0,0,0);
+                				 depthStream.content.repaint();
+                			 }
+                			 System.out.println("found " + fidx + " faces in range");
+                			 break;
+                		 }
+
+                		 PXCMFaceData.DetectionData detectData = face.QueryDetection(); 
+
+                		 //detecting a face in thestream using the sdk rect
+                		 if (detectData != null)
+                		 {
+                			 PXCMRectI32 rect = new PXCMRectI32();
+                			 boolean ret = detectData.QueryBoundingRect(rect);
+                			 if (ret) { 
+                				 System.out.println ("Top Left corner: (" + rect.x + "," + rect.y + ")" ); 
+                				 System.out.println ("Height: " + rect.h + " Width: " + rect.w);
+                				 //technically only painting over one face at a time even though the program is finding as many as there are.
+                				 //considering the program it makes sense.
+                				 colorStream.content.setPoints(rect.x,rect.y,rect.w,rect.h);
+                				 depthStream.content.setPoints(rect.x,rect.y,rect.w,rect.h);
+                			 }
+                		 } else {
+                			 System.out.println("Error in detect data.");
+                			 break;
+                		 }
+                	 }
                 	 
                 	 
                      if (sample.color != null)
@@ -198,8 +185,8 @@ public class FaceTracking {
  	                    int cBuff[] = new int[cData.pitches[0]/4 * colorHeight];
                          
  		                cData.ToIntArray(0, cBuff);
- 	    	            c_df.image.setRGB (0, 0, colorWidth, colorHeight, cBuff, 0, cData.pitches[0]/4);
- 	        	        c_df.repaint();  
+ 		                colorStream.content.image.setRGB (0, 0, colorWidth, colorHeight, cBuff, 0, cData.pitches[0]/4);
+ 		                colorStream.content.repaint();  
  	           	        sts = sample.color.ReleaseAccess(cData);
  						
  	              	    if (sts.compareTo(pxcmStatus.PXCM_STATUS_NO_ERROR)<0)
@@ -221,8 +208,8 @@ public class FaceTracking {
 
  	                    int dBuff[] = new int[dData.pitches[0]/4 * depthHeight];
  	                    dData.ToIntArray(0, dBuff);
- 	                    d_df.image.setRGB (0, 0, depthWidth, depthHeight, dBuff, 0, dData.pitches[0]/4);
- 	                    d_df.repaint();
+ 	                    depthStream.content.image.setRGB (0, 0, depthWidth, depthHeight, dBuff, 0, dData.pitches[0]/4);
+ 	                    depthStream.content.repaint();
  	                    sts = sample.depth.ReleaseAccess(dData);
  	                    if (sts.compareTo(pxcmStatus.PXCM_STATUS_NO_ERROR)<0)
  	                    {
@@ -250,8 +237,8 @@ public class FaceTracking {
              System.out.println("Failed to initialize");
          }
          
-         cframe.dispose();
-         dframe.dispose();
+         colorStream.window.dispose();
+         depthStream.window.dispose();
     }
 }
 
