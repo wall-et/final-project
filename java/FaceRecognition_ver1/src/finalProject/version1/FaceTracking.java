@@ -116,8 +116,8 @@ public class FaceTracking {
     	
          Listener listener = new Listener();
          
-         CameraStream colorStream = new CameraStream(colorWidth, colorHeight, "Color Stream",listener);
-         CameraStream depthStream = new CameraStream(depthWidth, depthHeight, "Depth Stream",listener);
+         CameraStream colorStream = new CameraStream(colorWidth, colorHeight, "Color Stream",listener,0);
+         CameraStream depthStream = new CameraStream(depthWidth, depthHeight, "Depth Stream",listener,1);
          
          if (sts == pxcmStatus.PXCM_STATUS_NO_ERROR)
          {
@@ -172,53 +172,15 @@ public class FaceTracking {
                 	 }
                 	 
                 	 
-                     if (sample.color != null)
                      {
-     	                PXCMImage.ImageData cData = new PXCMImage.ImageData();                
-         	            sts = sample.color.AcquireAccess(PXCMImage.Access.ACCESS_READ,PXCMImage.PixelFormat.PIXEL_FORMAT_RGB32, cData);
-             	        if (sts.compareTo(pxcmStatus.PXCM_STATUS_NO_ERROR) < 0)
- 						{
-                 	        System.out.println ("Failed to AcquireAccess of color image data");
-                     	    System.exit(3);
- 	                    }
-                      
- 	                    int cBuff[] = new int[cData.pitches[0]/4 * colorHeight];
-                         
- 		                cData.ToIntArray(0, cBuff);
- 		                colorStream.content.image.setRGB (0, 0, colorWidth, colorHeight, cBuff, 0, cData.pitches[0]/4);
- 		                colorStream.content.repaint();  
- 	           	        sts = sample.color.ReleaseAccess(cData);
- 						
- 	              	    if (sts.compareTo(pxcmStatus.PXCM_STATUS_NO_ERROR)<0)
- 						{
- 	                    	    System.out.println ("Failed to ReleaseAccess of color image data");
- 	                        	System.exit(3);
- 	                    }
+                    	colorStream.updateStreamImage(sample);
  					}
  				
  	                if (sample.depth != null)
  					{       
- 	                    PXCMImage.ImageData dData = new PXCMImage.ImageData();
- 	                    sample.depth.AcquireAccess(PXCMImage.Access.ACCESS_READ,PXCMImage.PixelFormat.PIXEL_FORMAT_RGB32, dData);
- 	                    if (sts.compareTo(pxcmStatus.PXCM_STATUS_NO_ERROR)<0)
- 						{
- 	                        System.out.println ("Failed to AcquireAccess of depth image data");
- 	                        System.exit(3);
- 	                    }
-
- 	                    int dBuff[] = new int[dData.pitches[0]/4 * depthHeight];
- 	                    dData.ToIntArray(0, dBuff);
- 	                    depthStream.content.image.setRGB (0, 0, depthWidth, depthHeight, dBuff, 0, dData.pitches[0]/4);
- 	                    depthStream.content.repaint();
- 	                    sts = sample.depth.ReleaseAccess(dData);
- 	                    if (sts.compareTo(pxcmStatus.PXCM_STATUS_NO_ERROR)<0)
- 	                    {
- 	                        System.out.println ("Failed to ReleaseAccess of depth image data");
- 	                        System.exit(3);
- 	                    }
+ 	                	depthStream.updateStreamImage(sample);
  	                }
- 	                
- 	                
+
                  }
                  else
                  {
