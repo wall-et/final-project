@@ -1,9 +1,9 @@
 package finalProject.version1;
 
 import java.awt.*;
-import javax.swing.*;
-import intel.rssdk.*;
-import org.opencv.core.*;
+//import javax.swing.*;
+//import intel.rssdk.*;
+//import org.opencv.core.*;
 
 import java.awt.Component;
 import java.awt.Graphics;

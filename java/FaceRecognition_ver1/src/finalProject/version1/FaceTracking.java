@@ -5,6 +5,7 @@ import java.util.EnumSet;
 
 import javax.swing.JFrame;
 
+import intel.rssdk.PXCMBoxedData;
 import intel.rssdk.PXCMCapture;
 import intel.rssdk.PXCMFaceConfiguration;
 import intel.rssdk.PXCMFaceData;
@@ -152,9 +153,10 @@ public class FaceTracking {
 
                 		 PXCMFaceData.DetectionData detectData = face.QueryDetection(); 
 
-                		 //detecting a face in thestream using the sdk rect
+                		 
                 		 if (detectData != null)
                 		 {
+                			 //detecting a face in the stream using the sdk rect - rgb detection
                 			 PXCMRectI32 rect = new PXCMRectI32();
                 			 boolean ret = detectData.QueryBoundingRect(rect);
                 			 if (ret) { 
@@ -163,23 +165,26 @@ public class FaceTracking {
                 				 //technically only painting over one face at a time even though the program is finding as many as there are.
                 				 //considering the program it makes sense.
                 				 colorStream.content.setPoints(rect.x,rect.y,rect.w,rect.h);
-                				 depthStream.content.setPoints(rect.x,rect.y,rect.w,rect.h);
+                				 //the depth data is different. the detection is based on the rgb data.
+                				 //depthStream.content.setPoints(rect.x,rect.y,rect.w,rect.h);
+                			 }else{
+                				 System.out.println("Error detecting a triangle in face.");
                 			 }
+                			 
+                			 
                 		 } else {
                 			 System.out.println("Error in detect data.");
                 			 break;
                 		 }
                 	 }
                 	 
-                	 
-                     {
+                	 if (sample.color != null){
                     	colorStream.updateStreamImage(sample);
- 					}
+                	 }
  				
- 	                if (sample.depth != null)
- 					{       
+                	 if (sample.depth != null){       
  	                	depthStream.updateStreamImage(sample);
- 	                }
+                	 }
 
                  }
                  else

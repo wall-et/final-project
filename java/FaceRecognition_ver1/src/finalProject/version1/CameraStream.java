@@ -14,6 +14,9 @@ public class CameraStream {
 	int height;
 	int streamType;//[color,depth,ir]=[0,1,2]
 	
+	/*
+	 * the following constructor is creating windows to display content and initializing data
+	 * */
 	public CameraStream(int width,int height,String windowTitle,Listener listener,int type){
 		this.width = width;
 		this.height = height;
@@ -27,6 +30,9 @@ public class CameraStream {
 		this.window.setVisible(true);
 	}
 	
+	/*
+	 * this function is receiving a camera sample and updating the display windows
+	 * */
 	public void updateStreamImage(PXCMCapture.Sample sample){
 		PXCMImage.ImageData Data = new PXCMImage.ImageData();
 		pxcmStatus sts = null;
@@ -61,7 +67,6 @@ public class CameraStream {
         		 System.exit(3);
         	 }
          }
-	     //sts = sample.color.ReleaseAccess(Data);
 			
 	     if (sts.compareTo(pxcmStatus.PXCM_STATUS_NO_ERROR)<0)
 	     {
@@ -69,26 +74,5 @@ public class CameraStream {
 	    	 System.exit(3);
 	     }
 	}
-	
-	/*public void updateDepthStream(PXCMCapture.Sample sample){
-		PXCMImage.ImageData dData = new PXCMImage.ImageData();
-		pxcmStatus sts = sample.depth.AcquireAccess(PXCMImage.Access.ACCESS_READ,PXCMImage.PixelFormat.PIXEL_FORMAT_RGB32, dData);
-         if (sts.compareTo(pxcmStatus.PXCM_STATUS_NO_ERROR)<0)
-			{
-             System.out.println ("Failed to AcquireAccess of depth image data");
-             System.exit(3);
-         }
-
-         int dBuff[] = new int[dData.pitches[0]/4 * depthHeight];
-         dData.ToIntArray(0, dBuff);
-         depthStream.content.image.setRGB (0, 0, depthWidth, depthHeight, dBuff, 0, dData.pitches[0]/4);
-         depthStream.content.repaint();
-         sts = sample.depth.ReleaseAccess(dData);
-         if (sts.compareTo(pxcmStatus.PXCM_STATUS_NO_ERROR)<0)
-         {
-             System.out.println ("Failed to ReleaseAccess of depth image data");
-             System.exit(3);
-         }
-	}*/
 
 }
