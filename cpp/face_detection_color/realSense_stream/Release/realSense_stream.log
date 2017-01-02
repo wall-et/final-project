@@ -1,0 +1,9 @@
+﻿  main.cpp
+main.cpp(16): warning C4005: 'MAX_FACES': macro redefinition
+  d:\programming\cpp-vs\realsense_stream\realsense_stream\face_controller.h(8): note: see previous definition of 'MAX_FACES'
+main.cpp(62): error C2027: use of undefined type 'PXCFaceModule'
+  C:\Program Files (x86)\Intel\RSSDK\Include\pxcsensemanager.h(16): note: see declaration of 'PXCFaceModule'
+main.cpp(62): error C2227: left of '->CreateOutput' must point to class/struct/union/generic type
+main.cpp(63): error C2027: use of undefined type 'PXCFaceModule'
+  C:\Program Files (x86)\Intel\RSSDK\Include\pxcsensemanager.h(16): note: see declaration of 'PXCFaceModule'
+main.cpp(63): error C2227: left of '->CreateActiveConfiguration' must point to class/struct/union/generic type

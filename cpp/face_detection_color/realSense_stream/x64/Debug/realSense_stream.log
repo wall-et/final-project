@@ -1,0 +1,5 @@
+﻿  main.cpp
+d:\programming\cpp-vs\realsense_stream\realsense_stream\main.cpp(16): warning C4005: 'MAX_FACES': macro redefinition
+  d:\programming\cpp-vs\realsense_stream\realsense_stream\face_controller.h(8): note: see previous definition of 'MAX_FACES'
+  realSense_stream.vcxproj -> D:\programming\cpp-vs\realSense_stream\x64\Debug\realSense_stream.exe
+  realSense_stream.vcxproj -> D:\programming\cpp-vs\realSense_stream\x64\Debug\realSense_stream.pdb (Full PDB)
