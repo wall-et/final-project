@@ -1,0 +1,17 @@
+﻿  face_controller.cpp
+face_controller.cpp(53): warning C4244: '=': conversion from 'pxcF32' to 'int', possible loss of data
+face_controller.cpp(50): warning C4477: 'wprintf_s' : format string '%d' requires an argument of type 'int', but variadic argument 2 has type 'double'
+face_controller.cpp(50): warning C4477: 'wprintf_s' : format string '%d' requires an argument of type 'int', but variadic argument 3 has type 'double'
+face_controller.cpp(50): warning C4477: 'wprintf_s' : format string '%d' requires an argument of type 'int', but variadic argument 4 has type 'double'
+face_controller.cpp(119): warning C4244: 'argument': conversion from 'double' to 'int', possible loss of data
+face_controller.cpp(120): warning C4244: 'argument': conversion from 'double' to 'int', possible loss of data
+face_controller.cpp(121): warning C4244: 'argument': conversion from 'double' to 'int', possible loss of data
+face_controller.cpp(122): warning C4244: 'argument': conversion from 'double' to 'int', possible loss of data
+face_controller.cpp(123): warning C4244: 'argument': conversion from 'double' to 'int', possible loss of data
+  Generating code
+  1 of 107 functions ( 0.9%) were compiled, the rest were copied from previous compilation.
+    0 functions were new in current compilation
+    1 functions had inline decision re-evaluated but remain unchanged
+  Finished generating code
+  realSense_stream.vcxproj -> D:\programming\cpp-vs\realSense_stream\Release\realSense_stream.exe
+  realSense_stream.vcxproj -> D:\programming\cpp-vs\realSense_stream\Release\realSense_stream.pdb (Full PDB)
