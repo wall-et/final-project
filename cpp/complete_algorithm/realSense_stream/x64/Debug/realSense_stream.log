@@ -1,0 +1,13 @@
+﻿  main.cpp
+d:\programming\cpp-vs\realsense_stream\realsense_stream\main.cpp(23): warning C4005: 'MAX_FACES': macro redefinition
+  d:\programming\cpp-vs\realsense_stream\realsense_stream\face_controller.h(8): note: see previous definition of 'MAX_FACES'
+d:\programming\cpp-vs\realsense_stream\realsense_stream\main.cpp(102): warning C4101: 'faceAvgDepth': unreferenced local variable
+  face_controller.cpp
+d:\programming\cpp-vs\realsense_stream\realsense_stream\face_controller.cpp(180): warning C4244: 'argument': conversion from 'double' to 'int', possible loss of data
+d:\programming\cpp-vs\realsense_stream\realsense_stream\face_controller.cpp(181): warning C4244: 'argument': conversion from 'double' to 'int', possible loss of data
+d:\programming\cpp-vs\realsense_stream\realsense_stream\face_controller.cpp(182): warning C4244: 'argument': conversion from 'double' to 'int', possible loss of data
+d:\programming\cpp-vs\realsense_stream\realsense_stream\face_controller.cpp(183): warning C4244: 'argument': conversion from 'double' to 'int', possible loss of data
+d:\programming\cpp-vs\realsense_stream\realsense_stream\face_controller.cpp(184): warning C4244: 'argument': conversion from 'double' to 'int', possible loss of data
+  Generating Code...
+  realSense_stream.vcxproj -> D:\programming\cpp-vs\realSense_stream\x64\Debug\realSense_stream.exe
+  realSense_stream.vcxproj -> D:\programming\cpp-vs\realSense_stream\x64\Debug\realSense_stream.pdb (Full PDB)

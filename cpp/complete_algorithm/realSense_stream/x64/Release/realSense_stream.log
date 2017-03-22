@@ -1,0 +1,7 @@
+﻿  face_controller.cpp
+face_controller.cpp(105): error C3867: 'FaceController::calculatePointDistances': non-standard syntax; use '&' to create a pointer to member
+face_controller.cpp(179): warning C4244: 'argument': conversion from 'double' to 'int', possible loss of data
+face_controller.cpp(180): warning C4244: 'argument': conversion from 'double' to 'int', possible loss of data
+face_controller.cpp(181): warning C4244: 'argument': conversion from 'double' to 'int', possible loss of data
+face_controller.cpp(182): warning C4244: 'argument': conversion from 'double' to 'int', possible loss of data
+face_controller.cpp(183): warning C4244: 'argument': conversion from 'double' to 'int', possible loss of data
