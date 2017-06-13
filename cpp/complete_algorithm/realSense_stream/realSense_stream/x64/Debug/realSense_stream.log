@@ -1,0 +1,8 @@
+﻿  face_controller.cpp
+d:\programming\cpp-vs\realsense_stream\realsense_stream\face_controller.cpp(209): warning C4244: 'argument': conversion from 'double' to 'int', possible loss of data
+d:\programming\cpp-vs\realsense_stream\realsense_stream\face_controller.cpp(210): warning C4244: 'argument': conversion from 'double' to 'int', possible loss of data
+d:\programming\cpp-vs\realsense_stream\realsense_stream\face_controller.cpp(211): warning C4244: 'argument': conversion from 'double' to 'int', possible loss of data
+d:\programming\cpp-vs\realsense_stream\realsense_stream\face_controller.cpp(212): warning C4244: 'argument': conversion from 'double' to 'int', possible loss of data
+d:\programming\cpp-vs\realsense_stream\realsense_stream\face_controller.cpp(213): warning C4244: 'argument': conversion from 'double' to 'int', possible loss of data
+  realSense_stream.vcxproj -> D:\programming\cpp-vs\realSense_stream\x64\Debug\realSense_stream.exe
+  realSense_stream.vcxproj -> D:\programming\cpp-vs\realSense_stream\x64\Debug\realSense_stream.pdb (Full PDB)
